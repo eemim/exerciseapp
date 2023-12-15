@@ -52,4 +52,15 @@ const createTrainingsTable = () =>{
         );
       };
 
-    export {createTrainingsTable, getTrainings, saveTraining};
+      const deleteTraining = (id, getTrainings) => {
+        console.log("Deleting training...");
+        db.transaction(
+          (tx) => {
+            tx.executeSql("DELETE FROM trainings WHERE id = ?;", [id]);
+          },
+          null,
+          getTrainings
+        );
+      };
+
+    export {createTrainingsTable, getTrainings, saveTraining, deleteTraining};

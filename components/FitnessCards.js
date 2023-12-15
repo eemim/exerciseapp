@@ -14,7 +14,7 @@ import MuscleGroupDropdown from '../data/MuscleGroupDropdown';
 import { Icon } from "react-native-elements";
 import MuscleGroupImage from "../data/MuscleGroupImage";
 // import * as SQLite from "expo-sqlite";
-import {createTrainingsTable, getTrainings, saveTraining} from './database';
+import {createTrainingsTable, getTrainings, saveTraining, deleteTraining} from './database';
 
 //const db = SQLite.openDatabase("fitness.db");
 
@@ -39,7 +39,7 @@ const FitnessCards = () => {
 
 
 
-  const deleteTraining = (id) => {
+  const handleDeleteTraining = (id) => {
     Alert.alert(
       "Do you really want to delete this training?",
       null,
@@ -51,13 +51,7 @@ const FitnessCards = () => {
         {
           text: "OK",
           onPress: () => {
-            db.transaction(
-              (tx) => {
-                tx.executeSql("DELETE FROM trainings WHERE id = ?;", [id]);
-              },
-              null,
-              getTrainings
-            );
+            deleteTraining(id, () => getTrainings(setTrainings));
           },
         },
       ],
@@ -103,7 +97,7 @@ const FitnessCards = () => {
               <Pressable
                 style={styles.deleteButton}
                 onPress={() => {
-                  deleteTraining(item.id);
+                  handleDeleteTraining(item.id);
                 }}
               >
                 <Icon name="clear" size={22} color="red" />

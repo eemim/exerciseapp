@@ -12,6 +12,7 @@ const MuscleGroupDropdown = ({ onSelectionChange }) => {
     const fetchMuscleGroups = async () => {
       const url =
         `${API_URL}/getMuscleGroups`;
+       // console.log('Api url: ', url)
       const options = {
         method: "GET",
         headers: {
@@ -19,11 +20,12 @@ const MuscleGroupDropdown = ({ onSelectionChange }) => {
           "X-RapidAPI-Host": `${API_HOST}`,
         },
       };
+     // console.log('api headres: ', options.headers)
 
       try {
         const response = await fetch(url, options);
         const result = await response.json();
-        // console.log(result); // api data
+     //   console.log(result); // api data
 
         const data = result.map((item) => ({
           label: item,
