@@ -9,7 +9,7 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import MuscleGroupDropdown from "./MuscleGroupDropdown";
+import MuscleGroupDropdown from "../data/MuscleGroupDropdown";
 import MuscleGroupImage from "../data/MuscleGroupImage";
 import GlobalStyles from "./GlobalStyles";
 import { useNavigation } from "@react-navigation/native";

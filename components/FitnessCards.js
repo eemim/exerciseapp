@@ -10,12 +10,13 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import MuscleGroupDropdown from "./MuscleGroupDropdown";
+import MuscleGroupDropdown from '../data/MuscleGroupDropdown';
 import { Icon } from "react-native-elements";
 import MuscleGroupImage from "../data/MuscleGroupImage";
-import * as SQLite from "expo-sqlite";
+// import * as SQLite from "expo-sqlite";
+import {createTrainingsTable, getTrainings, saveTraining} from './database';
 
-const db = SQLite.openDatabase("fitness.db");
+//const db = SQLite.openDatabase("fitness.db");
 
 const FitnessCards = () => {
   const navigation = useNavigation();
@@ -25,57 +26,18 @@ const FitnessCards = () => {
   const [isPopupVisible, setPopupVisible] = useState(false);
 
   useEffect(() => {
-    console.log("Fetching trainings...");
-    db.transaction(
-      (tx) => {
-        tx.executeSql(
-          "CREATE TABLE IF NOT EXISTS trainings (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, muscleGroups TEXT);"
-        );
-      },
-      null,
-      getTrainings()
-    );
+    createTrainingsTable();
+    getTrainings(setTrainings);
   }, []);
 
-  const saveTraining = () => {
-    console.log("Saving training...");
-    db.transaction(
-      (tx) => {
-        tx.executeSql(
-          "INSERT INTO trainings (name, muscleGroups) VALUES (?, ?);",
-          [trainingName, JSON.stringify(selectedMuscleGroups)],
-          (_, result) => {
-            console.log("Training saved to the database:", result.insertId);
-          },
-          (_, error) => {
-            console.error("Error inserting training:", error);
-          }
-        );
-      },
-      (error) => {
-        console.error("Transaction error:", error);
-      }
-    );
+  const handleSaveTraining = () => {
+    console.log('handling save training...')
+    saveTraining(trainingName, selectedMuscleGroups);
+    getTrainings(setTrainings);
   };
 
-  const getTrainings = () => {
-    console.log("Getting trainings...");
-    db.transaction(
-      (tx) => {
-        tx.executeSql("SELECT * FROM trainings;", [], (_, result) => {
-          const fetchedTrainings = result.rows._array.map((training) => ({
-            ...training,
-            muscleGroups: JSON.parse(training.muscleGroups),
-          }));
-          console.log("Fetched trainings from the database:", fetchedTrainings);
-          setTrainings(fetchedTrainings);
-        });
-      },
-      (error) => {
-        console.error("Transaction error:", error);
-      }
-    );
-  };
+
+
 
   const deleteTraining = (id) => {
     Alert.alert(
@@ -114,8 +76,7 @@ const FitnessCards = () => {
   };
 
   const handleConfirm = () => {
-    saveTraining();
-    getTrainings();
+    handleSaveTraining();
     handleClosePopup();
   };
 
