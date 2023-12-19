@@ -10,13 +10,15 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import MuscleGroupDropdown from '../data/MuscleGroupDropdown';
+import MuscleGroupDropdown from "../data/MuscleGroupDropdown";
 import { Icon } from "react-native-elements";
 import MuscleGroupImage from "../data/MuscleGroupImage";
-// import * as SQLite from "expo-sqlite";
-import {createTrainingsTable, getTrainings, saveTraining, deleteTraining} from './database';
-
-//const db = SQLite.openDatabase("fitness.db");
+import {
+  createTrainingsTable,
+  getTrainings,
+  saveTraining,
+  deleteTraining,
+} from "./database";
 
 const FitnessCards = () => {
   const navigation = useNavigation();
@@ -31,13 +33,10 @@ const FitnessCards = () => {
   }, []);
 
   const handleSaveTraining = () => {
-    console.log('handling save training...')
+    console.log("handling save training...");
     saveTraining(trainingName, selectedMuscleGroups);
     getTrainings(setTrainings);
   };
-
-
-
 
   const handleDeleteTraining = (id) => {
     Alert.alert(
@@ -124,7 +123,7 @@ const FitnessCards = () => {
             value={trainingName}
           />
           <Text style={styles.dropText}>Select Muscle Groups:</Text>
-          
+
           <MuscleGroupDropdown
             onSelectionChange={(selectedItems) =>
               setSelectedMuscleGroups(selectedItems)
@@ -198,7 +197,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 12,
     padding: 12,
-    marginBottom:10,
+    marginBottom: 10,
   },
   trainingName: {
     fontSize: 18,
