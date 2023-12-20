@@ -129,6 +129,7 @@ const WorkoutCards = ({ route }) => {
       />
       <View style={styles.container}>
         <View style={styles.trainingContainer}>
+        <Text style={{color:'white'}}>{trainingDetails.dateAdded}</Text>
           <Text style={styles.textStyle}>Training: {trainingDetails.name}</Text>
           <MuscleGroupImage muscleGroups={trainingDetails.muscleGroups} />
         </View>
@@ -264,9 +265,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   trainingContainer: {
-    justifyContent: "center",
+    //justifyContent: "center",
     alignItems: "center",
-    // padding: 10,
+    marginBottom: -10,
     backgroundColor: "black",
   },
   iconStyle: {

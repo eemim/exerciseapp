@@ -2,14 +2,15 @@ import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabase("fitness.db");
 
-{
-  /** FITNESSCARDS.JS */
-}
+{/* FITNESSCARDS.JS */}
 
 const createTrainingsTable = () => {
   db.transaction((tx) => {
     tx.executeSql(
       "CREATE TABLE IF NOT EXISTS trainings (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, muscleGroups TEXT);"
+    );
+    tx.executeSql(
+      'ALTER TABLE trainings ADD COLUMN dateAdded DATE;'
     );
   });
 };
@@ -38,7 +39,7 @@ const saveTraining = (name, muscleGroups) => {
   db.transaction(
     (tx) => {
       tx.executeSql(
-        "INSERT INTO trainings (name, muscleGroups) VALUES (?, ?);",
+        "INSERT INTO trainings (name, muscleGroups, dateAdded) VALUES (?, ?, DATE('now'));",
         [name, JSON.stringify(muscleGroups)],
         (_, result) => {
           console.log("Training saved to the database:", result.insertId);
@@ -240,6 +241,31 @@ const deleteSet = (id, loadExercises) => {
   );
 };
 
+{/* CHANGE DATES FOR TEST DATA */}
+
+const updateTrainingDate = (updates) => {
+  db.transaction(
+    (tx) => {
+      updates.forEach((update) => {
+        const [newDate, trainingName] = update;
+        tx.executeSql(
+          "UPDATE trainings SET dateAdded = ? WHERE name = ?;",
+          [newDate, trainingName],
+          (_, result) => {
+            console.log(`Date updated for ${trainingName}`);
+          },
+          (_, error) => {
+            console.error(`Error updating date for ${trainingName}:`, error);
+          }
+        );
+      });
+    },
+    (error) => {
+      console.error("Transaction error:", error);
+    }
+  );
+};
+
 export {
   createTrainingsTable,
   getTrainings,
@@ -251,4 +277,5 @@ export {
   deleteExercise,
   saveSet,
   deleteSet,
+  updateTrainingDate,
 };

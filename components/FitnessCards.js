@@ -18,6 +18,7 @@ import {
   getTrainings,
   saveTraining,
   deleteTraining,
+  updateTrainingDate
 } from "./database";
 
 const FitnessCards = () => {
@@ -31,6 +32,29 @@ const FitnessCards = () => {
     createTrainingsTable();
     getTrainings(setTrainings);
   }, []);
+
+  const testData = () =>{
+    saveTraining('Testi1', ["all_lower"]);
+    saveTraining('Testi2', ["all_upper"]);
+    saveTraining('Testi3', ["back"]);
+    saveTraining('Testi4', ["chest", "shoulders"]);
+    saveTraining('Testi5', ["gluteus"]);
+
+    updateTrainingDate([
+      ["2023-12-19", "Testi1"],
+      ["2023-09-09", "Testi2"],
+      ["2023-09-10", "Testi3"],
+      ["2022-07-28", "Testi4"],
+      ["2023-10-10", "Testi5"],
+    ]);
+  };
+
+  // button for testData
+  const handleTestButtonClick = () => {
+    testData();
+  };
+
+
 
   const handleSaveTraining = () => {
     console.log("handling save training...");
@@ -82,6 +106,9 @@ const FitnessCards = () => {
       <Pressable onPress={handleAddTraining} style={styles.addButton}>
         <Text style={styles.addButtonText}>Add Training</Text>
       </Pressable>
+     {/* <Pressable onPress={handleTestButtonClick} style={styles.addButton}>
+      <Text>Create Test Data</Text>
+    </Pressable> */}
 
       <FlatList
         data={trainings.slice().reverse()}
@@ -93,6 +120,7 @@ const FitnessCards = () => {
           >
             <View style={styles.trainingHeader}>
               <Text style={styles.trainingName}>{item.name}</Text>
+              
               <Pressable
                 style={styles.deleteButton}
                 onPress={() => {
@@ -102,6 +130,7 @@ const FitnessCards = () => {
                 <Icon name="clear" size={22} color="red" />
               </Pressable>
             </View>
+            <Text style={styles.dateStyle}>{item.dateAdded}</Text>
             <MuscleGroupImage muscleGroups={item.muscleGroups} />
           </Pressable>
         )}
@@ -190,6 +219,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 2,
     right: 2,
+  },
+  dateStyle: {
+    position: 'absolute',
+    right: 5,
+    bottom: 5,
+    fontSize:16,
   },
   input: {
     height: 50,
