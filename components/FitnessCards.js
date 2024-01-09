@@ -15,6 +15,7 @@ import { Icon } from "react-native-elements";
 import MuscleGroupImage from "../data/MuscleGroupImage";
 import {
   createTrainingsTable,
+  createCompletedTrainingsTable,
   getTrainings,
   saveTraining,
   deleteTraining,
@@ -29,6 +30,7 @@ const FitnessCards = () => {
   const [isPopupVisible, setPopupVisible] = useState(false);
 
   useEffect(() => {
+    createCompletedTrainingsTable();
     createTrainingsTable();
     getTrainings(setTrainings);
   }, []);

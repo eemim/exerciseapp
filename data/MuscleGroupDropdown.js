@@ -125,8 +125,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     shadowColor: "#000",
     marginTop: 8,
-    //marginRight: 4,
-    marginLeft: 4,
+    //marginRight: 10,
+    marginLeft: 10,
     paddingHorizontal: 12,
     paddingVertical: 8,
     shadowOffset: {

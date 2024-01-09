@@ -12,7 +12,6 @@ import {
 import MuscleGroupDropdown from "../data/MuscleGroupDropdown";
 import MuscleGroupImage from "../data/MuscleGroupImage";
 import GlobalStyles from "./GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
 import AddSetModal from "./AddSetModal";
 import {
@@ -29,9 +28,7 @@ const WorkoutCards = ({ route }) => {
   const [exercise, setExercise] = useState([]);
   const [exerciseName, setExerciseName] = useState("");
   const [isExercisePopupVisible, setExercisePopupVisible] = useState(false);
-  const [selectedExerciseMuscleGroups, setSelectedExerciseMuscleGroups] =
-    useState([]);
-  const navigation = useNavigation();
+  const [selectedExerciseMuscleGroups, setSelectedExerciseMuscleGroups] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [isAddSetModalVisible, setAddSetModalVisible] = useState(false);
 
@@ -119,6 +116,7 @@ const WorkoutCards = ({ route }) => {
 
   return (
     <View style={GlobalStyles.droidSafeArea}>
+      {/*
       <Icon
         name="arrow-back"
         raised
@@ -126,10 +124,10 @@ const WorkoutCards = ({ route }) => {
         size={24}
         onPress={() => navigation.goBack()}
         underlayColor="yellow"
-      />
+  /> */}
       <View style={styles.container}>
         <View style={styles.trainingContainer}>
-        <Text style={{color:'white'}}>{trainingDetails.dateAdded}</Text>
+          <Text style={{ color: "white" }}>{trainingDetails.dateAdded}</Text>
           <Text style={styles.textStyle}>Training: {trainingDetails.name}</Text>
           <MuscleGroupImage muscleGroups={trainingDetails.muscleGroups} />
         </View>

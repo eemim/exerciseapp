@@ -23,6 +23,7 @@ const getTrainings = (setTrainings) => {
         const fetchedTrainings = result.rows._array.map((training) => ({
           ...training,
           muscleGroups: JSON.parse(training.muscleGroups),
+          id: training.id,
         }));
         console.log("Fetched trainings from the database:", fetchedTrainings);
         setTrainings(fetchedTrainings);
@@ -59,12 +60,20 @@ const deleteTraining = (id, getTrainings) => {
   console.log("Deleting training...");
   db.transaction(
     (tx) => {
-      tx.executeSql("DELETE FROM trainings WHERE id = ?;", [id]);
+      deleteCompletedTrainings(id);
+      tx.executeSql("DELETE FROM trainings WHERE id = ?;", [id], (_, result) => {
+        console.log("Training deleted from the database:", id);
+      });
     },
-    null,
-    getTrainings
+    (error) => {
+      console.error("Transaction error:", error);
+    },
+    () => {
+      getTrainings();
+    }
   );
 };
+
 
 {
   /** WORKOUTCARDS.JS */
@@ -241,6 +250,68 @@ const deleteSet = (id, loadExercises) => {
   );
 };
 
+{/* MARK TRAINING AS DONE */}
+
+const createCompletedTrainingsTable = () => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'CREATE TABLE IF NOT EXISTS completed_trainings (id INTEGER PRIMARY KEY AUTOINCREMENT, trainingId INTEGER);'
+    );
+  });
+};
+
+const markTrainingAsDone = (trainingId) => {
+  db.transaction(
+    (tx) => {
+      tx.executeSql(
+        'INSERT INTO completed_trainings (trainingId) VALUES (?);',
+        [trainingId],
+        (_, result) => {
+          console.log('Training marked as done:', trainingId);
+        },
+        (_, error) => {
+          console.error('Error marking training as done:', error);
+        }
+      );
+    },
+    (error) => {
+      console.error('Transaction error:', error);
+    }
+  );
+};
+
+const getCompletedTrainings = (setCompletedTrainings) => {
+  db.transaction(
+    (tx) => {
+      tx.executeSql('SELECT * FROM completed_trainings;', [], (_, result) => {
+        const completedTrainings = result.rows._array.map(
+          (completedTraining) => completedTraining.trainingId
+        );
+        console.log('Fetched completed trainings from the database:', completedTrainings);
+        setCompletedTrainings(completedTrainings);
+      });
+    },
+    (error) => {
+      console.error('Transaction error:', error);
+    }
+  );
+};
+
+const deleteCompletedTrainings = (trainingId, getCompletedTrainings) => {
+  console.log("Deleting completed trainings for training ID:", trainingId);
+  db.transaction(
+    (tx) => {
+      tx.executeSql("DELETE FROM completed_trainings WHERE trainingId = ?;", [trainingId]);
+    },
+    null,
+    getCompletedTrainings,
+    (error) => {
+      console.error("Transaction error:", error);
+    }
+  );
+};
+
+
 {/* CHANGE DATES FOR TEST DATA */}
 
 const updateTrainingDate = (updates) => {
@@ -278,4 +349,7 @@ export {
   saveSet,
   deleteSet,
   updateTrainingDate,
+  createCompletedTrainingsTable,
+  markTrainingAsDone,
+  getCompletedTrainings,
 };

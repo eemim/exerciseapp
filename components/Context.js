@@ -14,5 +14,3 @@ const FitnessContext = ({children}) => {
 }
 
 export {FitnessContext, FitnessItems}
-
-// KOODI EI KÄYTÖSSÄ VIELÄ

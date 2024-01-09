@@ -1,12 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, View, Image} from 'react-native';
 import FitnessCards from '../components/FitnessCards';
 import GlobalStyles from '../components/GlobalStyles';
 import { FitnessItems } from '../components/Context';
+import { getCompletedTrainings } from '../components/database';
 
 
 const HomePage = () => {
   const {workout} = useContext(FitnessItems);
+  const [completedTrainings, setCompletedTrainings] = useState([]);
+
+  useEffect(() => {
+    // Fetch completed workouts from the database
+    getCompletedTrainings(setCompletedTrainings);
+  }, []);
 
   return (
     <SafeAreaView style={GlobalStyles.droidSafeArea}>
@@ -15,8 +22,8 @@ const HomePage = () => {
           <Text style={styles.text}>Anabolic Archives</Text>
           <View>
             <View style={{ marginTop: 20 }}>
-              <Text style={styles.wText}>{workout}</Text>
-              <Text style={styles.wText}>WORKOUTS</Text>
+              <Text style={styles.wText}>{completedTrainings.length}</Text>
+              <Text style={styles.wText}>Completed Workouts</Text>
             </View>
           </View>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -43,7 +50,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'black',
     flex: 1,
-    marginTop:'5%',
+    //marginTop:'5%',
   },
   orangeContainer: {
     backgroundColor: 'black',//'#f8a01c',
