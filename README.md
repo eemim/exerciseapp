@@ -19,3 +19,7 @@ This project uses the following dependencies:
 
 - **SQLite:**
 - **Muscle Group Image Generator by Merten (RapidAPI):** Fetches muscle group images based on exercise data.
+
+## Screenshots
+
+<img src="images/Screenshot1.png" width=200> <img src="images/Screenshot2.png" width=200> <img src="images/Screenshot4.png" width=200> <img src="images/Screenshot3.png" width=200>
