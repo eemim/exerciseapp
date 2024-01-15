@@ -4,7 +4,7 @@
 
 ## Overview
 
-The Exerciser App is a mobile application created with React Native. It serves as a training app that helps users keep track of their exercises and results. The app is designed to assist users in organizing and managing their workout routines.
+The Exercise App is a mobile application created with React Native. It serves as a training app that helps users keep track of their exercises and results. The app is designed to assist users in organizing and managing their workout routines.
 
 ## Features
 
